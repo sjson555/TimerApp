@@ -39,21 +39,34 @@ class ViewController: UIViewController {
     @IBAction func startButtonTapped(_ sender: UIButton) {
         // 1초 마다 무언가 실행되어야 함
         timer?.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(doSomethingAfter1Second), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [self] _ in
+            if number > 0 {
+                number -= 1
+                slider.value = Float(number) / Float(60)
+                mainLabel.text = "\(number)초"
+            } else {
+                number = 0
+                mainLabel.text = "초를 선택하세요"
+                timer?.invalidate()
+                AudioServicesPlayAlertSound(SystemSoundID(1322))
+            }
+
+        }
+        //timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(doSomethingAfter1Second), userInfo: nil, repeats: true)
     }
     
-    @objc func doSomethingAfter1Second() {
-        if number > 0 {
-            number -= 1
-            slider.value = Float(number) / Float(60)
-            mainLabel.text = "\(number)초"
-        } else {
-            number = 0
-            mainLabel.text = "초를 선택하세요"
-            timer?.invalidate()
-            AudioServicesPlayAlertSound(SystemSoundID(1322))
-        }
-    }
+//    @objc func doSomethingAfter1Second() {
+//        if number > 0 {
+//            number -= 1
+//            slider.value = Float(number) / Float(60)
+//            mainLabel.text = "\(number)초"
+//        } else {
+//            number = 0
+//            mainLabel.text = "초를 선택하세요"
+//            timer?.invalidate()
+//            AudioServicesPlayAlertSound(SystemSoundID(1322))
+//        }
+//    }
     
     @IBAction func resetButtonTapped(_ sender: UIButton) {
         // 초기화 세팅
